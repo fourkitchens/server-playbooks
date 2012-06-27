@@ -2,6 +2,8 @@ Server Playbooks
 ========================
 
 A collection of Ansible playbooks for use in setting up various servers.
+Playbooks are a series of configuration steps and specifications for how the
+server should be setup, that are executed by Ansible.
 
 Executing the playbooks
 ---------------------------
@@ -9,14 +11,15 @@ Executing the playbooks
 ### Setup Ansible
 
 Playbooks require [Ansible][1] to execute them. It's really easy to setup, and
-you can choose between running it on the same machine you're configuring or a
-remote machine - as long as you can establish an SSH connection between them, it
-will work fine.
+you can choose between running it on the same machine you're configuring, or a
+remote machine. For a remote machine, all you need is the ability to establish
+an SSH connection to it, it will work fine.
 
-Generally, if you're looking for a quick time saver for a one-time build of a
-server, then you should set it up and run it on the target server. If you're a
-more serious server administrator who wants to maintain clusters of machines,
-you should setup Ansible on a separate controller machine or your personal machine.
+Generally, if you're looking for a quick time-saver for a one-time build of a
+server, then you should set up Ansible and execute the playbook on the target
+server. If you're a more serious server administrator who wants to maintain
+clusters of machines, you should setup Ansible on a separate controller machine
+or your personal machine.
 
 You may refer to the setup guide on the Ansible homepage, however here are the
 steps for setting it up on Ubuntu 12.04 and immediately configuring it to use
@@ -37,31 +40,41 @@ You can now test by typing:
 You should see:
 
     127.0.0.1 | success >> {
-        "ping": "pong"
+      "ping": "pong"
     }
 
-###
+### Run the play
 
-Once Ansible is setup, you can execute the play in one of two ways, depending
-on whether you want it to run on the current machine or against a remote one.
+The plays are organized into directories, so for example, ubuntu-12.04-lamp-dev
+contains all the settings and configuration for the Ubuntu 12.04 LAMP Dev server
+build. At the moment this is the only one, but more could be added soon.
 
-The playbook is configured to run against all hosts, this is easily configurable
-but executing the following will run it against everything in /etc/ansible/hosts:
+You should copy the vars/settings-default.yml file to the base folder of the
+play, and then edit it with your specific requirements. It's really easy to
+understand and contains all the configuration that will be customized from the
+default Ubuntu package setting.
+
+    cd ubuntu-12.04-lamp-dev
+    cp ./vars/settings-default.yml ./settings.yml
+
+You can execute the plays in one of two ways, depending on whether you want them
+to run on the current machine or against a remote one. The playbook files are
+configured to run against all hosts, this is easily configurable though.
+
+By executing the following, will run it against everything in /etc/ansible/hosts:
 
     ansible-playbook ./setup.yml
 
-To run the play on the current machine that you've got Ansible setup on, a variable
-needs to be set. There is a simple two line bash script that takes care of this
-and executes the play, so you can just do:
+To run the play on the current local machine, a variable needs to be set. There
+is a simple two line bash script that takes care of this and executes the play,
+so you can just do:
 
-    cd <playbook dir>
     ./run-local
 
 Conventions used in playbooks
 ---------------------------
 
-- The setup.yml file contains the main sequence of actions.
-
+- The setup.yml file contains the main sequence of actions and tasks.
 - When a configuration file is introduced by the playbook, i.e. isn't
   a pre-existing one, it's found in the /files subdirectory and is transferred
   using the 'copy' action.
@@ -75,6 +88,8 @@ Conventions used in playbooks
 
 Ubuntu 12.04 LAMP Dev Server
 ---------------------------
+
+Found in folder /ubuntu-12.04-lamp-dev
 
 Packages: Apache, MySQL, APC cache, PHP, Drush
 
