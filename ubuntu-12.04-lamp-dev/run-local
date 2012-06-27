@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Script for running the play on the localhost.
+export DEBIAN_FRONTEND=noninteractive
+ansible-playbook -c local ./setup.yml

@@ -1,0 +1,3 @@
+## Ansible provided setup ##
+# Set non-interactive apt package installs.
+DEBIAN_FRONTEND=noninteractive

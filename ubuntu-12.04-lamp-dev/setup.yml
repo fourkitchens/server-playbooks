@@ -1,0 +1,108 @@
+##
+# Ansible playbook for setting up a LAMP development server on Ubuntu 12.04.
+#
+
+---
+- hosts: all
+  user: root
+
+  vars_files:
+    - vars/settings.yml
+
+  tasks:
+    ##
+    # SSH configuration, notably adding the ability to have environment variables
+    # that are set when a non-interactive session starts. This is used so we can
+    # install packages non-interactively, otherwise the apt install command hangs 
+    # when packages like MySQL open interactive screens prompting for info.
+    #
+    - name: Copy SSHD config file
+      action: copy src=files/etc-ssh-sshd_config dest=/etc/ssh/sshd_config
+
+    - name: Copy SSH environment file
+      action: copy src=files/root-ssh-environment dest=/root/.ssh/environment
+
+      # We force a restart of sshd here, instead of using Ansible's notify system
+      # as we need it restarted immediately instead of at the end of the play.
+    - name: Restart ssh
+      action: service name=ssh state=restarted
+
+    ##
+    # Apt package installation of required software.
+    #
+    - name: Installing required packages for the LAMP stack
+      action: command /usr/bin/aptitude -y install php5 apache2 mysql-server mysql-client php5-mysql php-apc php5-xmlrpc php-soap php5-gd sendmail vsftpd
+
+    ##
+    # PHP Setup.
+    #
+    - name: PHP configuration file, php.ini
+      action: template src=templates/etc-php5-apache2-php-ini.j2 dest=/etc/php5/apache2/php.ini
+      notify: Restart Apache
+
+    - name: APC cache configuration file, apc.ini
+      action: template src=templates/etc-php5-conf-d-apc-ini.j2 dest=/etc/php5/conf.d/apc.ini
+      notify: Restart Apache
+
+    ##
+    # MySQL database setup, this does the equivalent of mysql_secure_installation
+    #
+    # TODO: Create a MySQL module for Ansible that makes this all cleaner.
+    #
+    - name: MySQL configuration file, my.cnf
+      action: template src=templates/etc-mysql-my-cnf.j2 dest=/etc/mysql/my.cnf
+      notify: Restart MySQL
+
+    - name: Delete anonymous MySQL server users
+      action: shell echo "DELETE FROM mysql.user WHERE user = '';" | mysql
+
+    - name: Secure the MySQL root user
+      action: shell echo "UPDATE mysql.user SET password = PASSWORD('$mysql_root_password') WHERE user = 'root';" | mysql
+
+    - name: Remove the MySQL test database
+      action: shell echo "DROP DATABASE test;" | mysql
+
+    - name: Reload privileges so user changes take effect in MySQL
+      action: shell echo "FLUSH PRIVILEGES;" | mysql
+
+    - name: MySQL config for easy access as root user
+      action: template src=templates/root-my-cnf.j2 dest=/root/.my.cnf
+
+    ##
+    # Drush install, a Drupal shell tool.
+    #
+    - name: Install drush for Drupal
+      action: shell pear channel-discover pear.drush.org && pear install drush/drush
+
+    ##
+    # Apache2 setup.
+    #
+    - name: Enable some required modules
+      action: command a2enmod rewrite vhost_alias
+
+    - name: Apache configuration file for our site
+      action: template src=templates/etc-apache2-sites-available-devserver.j2 dest=/etc/apache2/sites-available/devserver
+      notify: Restart Apache
+
+    - name: Disable the default site
+      action: command a2dissite default
+
+    - name: Enable our new site
+      action: command a2ensite devserver
+
+    ##
+    # FTP server setup.
+    #
+    - name: FTP daemon setup
+      action: template src=templates/etc-vsftpd-conf.j2 dest=/etc/vsftpd.conf
+      notify: Restart vsftpd
+
+  handlers:
+    - name: Restart Apache
+      action: service name=apache2 state=restarted
+
+    - name: Restart MySQL
+      action: service name=mysql state=restarted
+
+    - name: Restart vsftpd
+      action: service name=vsftpd state=restarted
