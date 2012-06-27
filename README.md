@@ -1,10 +1,10 @@
-Server playbooks
+Server Playbooks
 ========================
 
 A collection of Ansible playbooks for use in setting up servers.
 
 Ubuntu 12.04 LAMP Dev Server
-========================
+--------------------------
 
 Packages: Apache, MySQL, APC cache, PHP, Drush
 
