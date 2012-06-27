@@ -17,7 +17,7 @@
     # when packages like MySQL open interactive screens prompting for info.
     #
     - name: Copy SSHD config file
-      action: copy src=files/etc-ssh-sshd_config dest=/etc/ssh/sshd_config
+      action: template src=templates/etc-ssh-sshd_config.j2 dest=/etc/ssh/sshd_config
 
     - name: Copy SSH environment file
       action: copy src=files/root-ssh-environment dest=/root/.ssh/environment
