@@ -1,5 +1,6 @@
-# Settings that are applied to the templates. This file should be modified to
-# suit your needs.
+# Settings that are applied to the templates. This file should be copied to
+# the base folder of the play and renamed settings.yml, then modified to suit
+# your needs.
 
 ---
 # php.ini
