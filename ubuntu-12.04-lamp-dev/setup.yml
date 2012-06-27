@@ -7,13 +7,13 @@
   user: root
 
   vars_files:
-    - vars/settings.yml
+    - [ settings.yml, vars/settings-default.yml ]
 
   tasks:
     ##
     # SSH configuration, notably adding the ability to have environment variables
     # that are set when a non-interactive session starts. This is used so we can
-    # install packages non-interactively, otherwise the apt install command hangs 
+    # install packages non-interactively, otherwise the apt install command hangs
     # when packages like MySQL open interactive screens prompting for info.
     #
     - name: Copy SSHD config file
