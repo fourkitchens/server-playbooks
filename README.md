@@ -3,7 +3,7 @@ Server Playbooks
 
 A collection of Ansible playbooks for use in setting up various servers.
 Playbooks are a series of configuration steps and specifications for how the
-server should be setup, that are executed by Ansible.
+server should be configured.
 
 Executing the playbooks
 ---------------------------
@@ -12,8 +12,8 @@ Executing the playbooks
 
 Playbooks require [Ansible][1] to execute them. It's really easy to setup, and
 you can choose between running it on the same machine you're configuring, or a
-remote machine. For a remote machine, all you need is the ability to establish
-an SSH connection to it, it will work fine.
+remote machine. For a remote machine, all Ansible needs is the ability to establish
+an SSH connection to it.
 
 Generally, if you're looking for a quick time-saver for a one-time build of a
 server, then you should set up Ansible and execute the playbook on the target
@@ -45,7 +45,7 @@ You should see:
 
 ### Run the play
 
-The plays are organized into directories, so for example, ubuntu-12.04-lamp-dev
+The plays are organized into directories, so for example, *ubuntu-12.04-lamp-dev*
 contains all the settings and configuration for the Ubuntu 12.04 LAMP Dev server
 build. At the moment this is the only one, but more could be added soon.
 
@@ -61,7 +61,7 @@ You can execute the plays in one of two ways, depending on whether you want them
 to run on the current machine or against a remote one. The playbook files are
 configured to run against all hosts, this is easily configurable though.
 
-By executing the following, will run it against everything in /etc/ansible/hosts:
+By executing the following, will run it against everything in */etc/ansible/hosts*:
 
     ansible-playbook ./setup.yml
 
@@ -76,20 +76,20 @@ Conventions used in playbooks
 
 - The setup.yml file contains the main sequence of actions and tasks.
 - When a configuration file is introduced by the playbook, i.e. isn't
-  a pre-existing one, it's found in the /files subdirectory and is transferred
+  a pre-existing one, it's found in the */files* subdirectory and is transferred
   using the 'copy' action.
 - Files that already exist on the server, that we are modifying, are found
-  in /templates and have Jinja2-style variable substitution. They are
+  in */templates* and have Jinja2-style variable substitution. They are
   transferred using Ansible's 'template' action.
 - Every value in a configuration file that is modified from the default will
   contain a variable substitution, so you know that looking in the
-  vars/settings-default.yml file will give you a complete overview of all the
+  *vars/settings-default.yml* file will give you a complete overview of all the
   configuration that is modified from the server package default.
 
 Ubuntu 12.04 LAMP Dev Server
 ---------------------------
 
-Found in folder /ubuntu-12.04-lamp-dev
+Found in folder */ubuntu-12.04-lamp-dev*
 
 Packages: Apache, MySQL, APC cache, PHP, Drush
 
