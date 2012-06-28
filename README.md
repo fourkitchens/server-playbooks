@@ -45,11 +45,11 @@ You should see:
 
 ### Run the play
 
-The plays are organized into directories, so for example, _ubuntu-12.04-lamp-dev_
+The plays are organized into directories, so for example, __ubuntu-12.04-lamp-dev__
 contains all the settings and configuration for the Ubuntu 12.04 LAMP Dev server
 build. At the moment this is the only one, but more could be added soon.
 
-You should copy the _vars/settings-default.yml_ file to the base folder of the
+You should copy the __vars/settings-default.yml__ file to the base folder of the
 play, and then edit it with your specific requirements. It's really easy to
 understand and contains all the configuration that will be customized from the
 default Ubuntu package setting.
@@ -61,7 +61,7 @@ You can execute the plays in one of two ways, depending on whether you want them
 to run on the current machine or against a remote one. The playbook files are
 configured to run against all hosts, this is easily configurable though.
 
-By executing the following, will run it against everything in _/etc/ansible/hosts_:
+By executing the following, will run it against everything in __/etc/ansible/hosts__:
 
     ansible-playbook ./setup.yml
 
@@ -76,20 +76,20 @@ Conventions used in playbooks
 
 - The setup.yml file contains the main sequence of actions and tasks.
 - When a configuration file is introduced by the playbook, i.e. isn't
-  a pre-existing one, it's found in the _/files_ subdirectory and is transferred
+  a pre-existing one, it's found in the __/files__ subdirectory and is transferred
   using the 'copy' action.
 - Files that already exist on the server, that we are modifying, are found
-  in _/templates_ and have Jinja2-style variable substitution. They are
+  in __/templates__ and have Jinja2-style variable substitution. They are
   transferred using Ansible's 'template' action.
 - Every value in a configuration file that is modified from the default will
   contain a variable substitution, so you know that looking in the
-  _vars/settings-default.yml_ file will give you a complete overview of all the
+  __vars/settings-default.yml__ file will give you a complete overview of all the
   configuration that is modified from the server package default.
 
 Ubuntu 12.04 LAMP Dev Server
 ---------------------------
 
-Found in folder _/ubuntu-12.04-lamp-dev_
+Found in folder __/ubuntu-12.04-lamp-dev__
 
 Packages: Apache, MySQL, APC cache, PHP, Drush
 
