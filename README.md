@@ -76,10 +76,10 @@ Conventions used in playbooks
 
 - The setup.yml file contains the main sequence of actions and tasks.
 - When a configuration file is introduced by the playbook, i.e. isn't
-  a pre-existing one, it's found in the __/files__ subdirectory and is transferred
+  a pre-existing one, it's found in the __files__ subdirectory and is transferred
   using the 'copy' action.
 - Files that already exist on the server, that we are modifying, are found
-  in __/templates__ and have Jinja2-style variable substitution. They are
+  in __templates__ and have Jinja2-style variable substitution. They are
   transferred using Ansible's 'template' action.
 - Every value in a configuration file that is modified from the default will
   contain a variable substitution, so you know that looking in the
