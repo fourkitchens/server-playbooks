@@ -24,7 +24,7 @@ mysql_character_set_server: 'utf8'
 mysql_collation_server: 'utf8_general_ci'
 
 # mysql
-mysql_root_password: 'plawMWNWEtu48slm'
+mysql_root_password: 'password'
 
 # apache
 apache_server_admin: 'webmaster@example.com'
