@@ -3,6 +3,11 @@
 # your needs.
 
 ---
+# Hostname is important as we need to delete an anonymous MySQL
+# user that is created with this name, make sure you match this
+# up.
+server_hostname: 'example.com'
+
 # php.ini
 php_max_execution_time: '90'
 php_display_errors: 'On'
@@ -35,6 +40,3 @@ vsftpd_anonymous_enable: 'NO'
 vsftpd_local_enable: 'YES'
 vsftpd_write_enable: 'YES'
 vsftpd_local_umask: '002'
-
-# sshd
-sshd_permit_user_environment: 'yes'

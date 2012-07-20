@@ -11,91 +11,128 @@
 
   tasks:
     ##
-    # SSH configuration, notably adding the ability to have environment variables
-    # that are set when a non-interactive session starts. This is used so we can
-    # install packages non-interactively, otherwise the apt install command hangs
-    # when packages like MySQL open interactive screens prompting for info.
-    #
-    - name: Copy SSHD config file
-      action: template src=templates/etc-ssh-sshd_config.j2 dest=/etc/ssh/sshd_config
-
-    - name: Copy SSH environment file
-      action: copy src=files/root-ssh-environment dest=/root/.ssh/environment
-
-      # We force a restart of sshd here, instead of using Ansible's notify system
-      # as we need it restarted immediately instead of at the end of the play.
-    - name: Restart ssh
-      action: service name=ssh state=restarted
-
-    ##
     # Apt package installation of required software.
     #
-    - name: Installing required packages for the LAMP stack
-      action: command /usr/bin/aptitude -y install php5 apache2 mysql-server mysql-client php5-mysql php-apc php5-xmlrpc php-soap php5-gd sendmail vsftpd
+    - name: Install required packages.
+      action: apt pkg=$item state=installed
+      tags: common
+      with_items:
+        - php5
+        - apache2
+        - mysql-server
+        - mysql-client
+        - php5-mysql
+        - php-apc
+        - php5-xmlrpc
+        - php-soap
+        - php5-gd
+        - sendmail
+        - unzip
+        - python-mysqldb
 
     ##
     # PHP Setup.
     #
     - name: PHP configuration file, php.ini
       action: template src=templates/etc-php5-apache2-php-ini.j2 dest=/etc/php5/apache2/php.ini
+      tags: common
       notify: Restart Apache
 
     - name: APC cache configuration file, apc.ini
       action: template src=templates/etc-php5-conf-d-apc-ini.j2 dest=/etc/php5/conf.d/apc.ini
+      tags: common
       notify: Restart Apache
 
     ##
     # MySQL database setup, this does the equivalent of mysql_secure_installation
     #
-    # TODO: Create a MySQL module for Ansible that makes this all cleaner.
-    #
     - name: MySQL configuration file, my.cnf
       action: template src=templates/etc-mysql-my-cnf.j2 dest=/etc/mysql/my.cnf
+      tags: common
       notify: Restart MySQL
 
-    - name: Delete anonymous MySQL server users
-      action: shell echo "DELETE FROM mysql.user WHERE user = '';" | mysql
+    - name: Set the root password. Has to be done using shell otherwise will fail if run again.
+      action: shell echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$mysql_root_password');" | mysql
+      tags: common
 
-    - name: Secure the MySQL root user
-      action: shell echo "UPDATE mysql.user SET password = PASSWORD('$mysql_root_password') WHERE user = 'root';" | mysql
+    - name: Delete anonymous MySQL server user for $server_hostname
+      action: mysql_user loginpass="$mysql_root_password" user="" host="$server_hostname" state="absent"
+      tags: common
+
+    - name: Delete anonymous MySQL server user for localhost
+      action: mysql_user loginpass="$mysql_root_password" user="" state="absent"
+      tags: common
+
+    - name: Secure the MySQL root user for IPV6 localhost (::1)
+      action: mysql_user loginpass="$mysql_root_password" user="root" passwd="$mysql_root_password" host="::1"
+      tags: common
+
+    - name: Secure the MySQL root user for IPV4 localhost (127.0.0.1)
+      action: mysql_user loginpass="$mysql_root_password" user="root" passwd="$mysql_root_password" host="127.0.0.1"
+      tags: common
+
+    - name: Secure the MySQL root user for localhost domain (localhost)
+      action: mysql_user loginpass="$mysql_root_password" user="root" passwd="$mysql_root_password" host="localhost"
+      tags: common
+
+    - name: Secure the MySQL root user for $server_hostname domain
+      action: mysql_user loginpass="$mysql_root_password" user="root" passwd="$mysql_root_password" host="$server_hostname"
+      tags: common
 
     - name: Remove the MySQL test database
-      action: shell echo "DROP DATABASE test;" | mysql
-
-    - name: Reload privileges so user changes take effect in MySQL
-      action: shell echo "FLUSH PRIVILEGES;" | mysql
+      action: mysql_db loginpass="$mysql_root_password" db=test state=absent
+      tags: common
 
     - name: MySQL config for easy access as root user
       action: template src=templates/root-my-cnf.j2 dest=/root/.my.cnf
-
-    ##
-    # Drush install, a Drupal shell tool.
-    #
-    - name: Install drush for Drupal
-      action: shell pear channel-discover pear.drush.org && pear install drush/drush
+      tags: common
 
     ##
     # Apache2 setup.
     #
     - name: Enable some required modules
       action: command a2enmod rewrite vhost_alias
+      tags: common
 
     - name: Apache configuration file for our site
       action: template src=templates/etc-apache2-sites-available-devserver.j2 dest=/etc/apache2/sites-available/devserver
+      tags: common
       notify: Restart Apache
 
     - name: Disable the default site
       action: command a2dissite default
+      tags: common
 
     - name: Enable our new site
       action: command a2ensite devserver
+      tags: common
 
     ##
     # FTP server setup.
     #
+    - name: PEAR for obtaining drush.
+      action: apt pkg=vsftpd state=installed
+      tags: ftp
+
     - name: FTP daemon setup
       action: template src=templates/etc-vsftpd-conf.j2 dest=/etc/vsftpd.conf
+      tags: ftp
       notify: Restart vsftpd
+
+    ##
+    # Drush install, a Drupal shell tool.
+    #
+    - name: PEAR for obtaining drush.
+      action: apt pkg=php-pear state=installed
+      tags: drush
+
+    - name: Setup PEAR channel for drush
+      action: command pear channel-discover pear.drush.org creates=/usr/share/php/.channels/pear.drush.org.reg
+      tags: drush
+
+    - name: Install drush for Drupal
+      action: command pear install drush/drush creates=/usr/bin/drush
+      tags: drush
 
   handlers:
     - name: Restart Apache

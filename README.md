@@ -28,7 +28,7 @@ localhost as the target server, the simplest configuration option:
     sudo aptitude -y install git python-jinja2 python-yaml python-paramiko
     git clone git://github.com/ansible/ansible.git
     cd ./ansible
-    git checkout 0.4.1
+    git checkout devel
     source ./hacking/env-setup
     sudo mkdir /etc/ansible
     sudo echo "127.0.0.1" > /etc/ansible/hosts
@@ -57,19 +57,17 @@ default Ubuntu package setting.
     cd ubuntu-12.04-lamp-dev
     cp ./vars/settings-default.yml ./settings.yml
 
-You can execute the plays in one of two ways, depending on whether you want them
-to run on the current machine or against a remote one. The playbook files are
-configured to run against all hosts, this is easily configurable though.
+You have some options when executing a play. For example, you may want a LAMP
+server but not drush or an ftp server. The parts of the play that setup these
+optional packages are tagged as such.
 
-By executing the following, will run it against everything in __/etc/ansible/hosts__:
+By executing the following, it will setup only the commonly used components:
 
-    ansible-playbook ./setup.yml
+    ansible-playbook -c local --tags="common" ./setup.yml
 
-To run the play on the current local machine, a variable needs to be set. There
-is a simple two line bash script that takes care of this and executes the play,
-so you can just do:
+You can add drush and ftp by doing:
 
-    ./run-local
+    ansible-playbook -c local --tags="common,drush,ftp" ./setup.yml
 
 Conventions used in playbooks
 ---------------------------
@@ -91,7 +89,7 @@ Ubuntu 12.04 LAMP Dev Server
 
 Found in folder __/ubuntu-12.04-lamp-dev__
 
-Packages: Apache, MySQL, APC cache, PHP, Drush
+Packages: Apache, MySQL, APC cache, PHP, Drush, FTP server.
 
 This server is configured for multiple developers who need to work on many
 projects simultaneously. The most notable piece of configuration is the way
