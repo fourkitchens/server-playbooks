@@ -134,6 +134,28 @@
       action: command pear install drush/drush creates=/usr/bin/drush
       tags: drush
 
+    ##
+    # node.js installation (latest stable instead of Ubuntu's out-of-date one)
+    #
+    - name: Package prerequisites for node.js
+      action: apt pkg=python-software-properties state=installed
+      tags: nodejs
+
+    - name: Add the node.js PPA
+      action: command add-apt-repository -y ppa:chris-lea/node.js creates=/etc/apt/sources.list.d/chris-lea-node_js-precise.list
+      tags: nodejs
+
+    - name: Update the apt cache for the new repository
+      action: apt update-cache=yes
+      tags: nodejs
+
+    - name: Install nodejs and npm
+      action: apt pkg=$item state=installed
+      tags: nodejs
+      with_items:
+        - nodejs
+        - npm
+
   handlers:
     - name: Restart Apache
       action: service name=apache2 state=restarted

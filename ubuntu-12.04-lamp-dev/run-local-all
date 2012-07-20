@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # Script for running the play on the localhost, everything included.
-ansible-playbook -c local --tags="common,drush,ftp" ./setup.yml
+ansible-playbook -c local --tags="common,drush,ftp,nodejs" ./setup.yml
