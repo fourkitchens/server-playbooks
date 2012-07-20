@@ -89,7 +89,7 @@ Ubuntu 12.04 LAMP Dev Server
 
 Found in folder __/ubuntu-12.04-lamp-dev__
 
-Packages: Apache, MySQL, APC cache, PHP, Drush, FTP server.
+Packages: Apache, MySQL, APC cache, PHP, Drush, FTP server, node.js.
 
 This server is configured for multiple developers who need to work on many
 projects simultaneously. The most notable piece of configuration is the way
