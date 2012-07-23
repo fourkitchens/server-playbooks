@@ -7,7 +7,7 @@
   user: root
 
   vars_files:
-    - [ settings.yml, vars/settings-default.yml ]
+    - settings.yml
 
   tasks:
     ##

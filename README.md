@@ -49,7 +49,7 @@ The plays are organized into directories, so for example, __ubuntu-12.04-lamp-de
 contains all the settings and configuration for the Ubuntu 12.04 LAMP Dev server
 build. At the moment this is the only one, but more could be added soon.
 
-You should copy the __vars/settings-default.yml__ file to the base folder of the
+You must copy the __vars/default-settings.yml__ file to the base folder of the
 play, and then edit it with your specific requirements. It's really easy to
 understand and contains all the configuration that will be customized from the
 default Ubuntu package setting.
