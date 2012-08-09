@@ -152,6 +152,13 @@
         - npm
 
     ##
+    # Redis server.
+    #
+    - name: Install redis
+      action: apt pkg=redis-server state=installed
+      tags: redis
+
+    ##
     # Restart services
     #
     - name: Restart Apache
