@@ -36,12 +36,10 @@
     - name: PHP configuration file, php.ini
       action: template src=templates/etc-php5-apache2-php-ini.j2 dest=/etc/php5/apache2/php.ini
       tags: common
-      notify: Restart Apache
 
     - name: APC cache configuration file, apc.ini
       action: template src=templates/etc-php5-conf-d-apc-ini.j2 dest=/etc/php5/conf.d/apc.ini
       tags: common
-      notify: Restart Apache
 
     ##
     # MySQL database setup, this does the equivalent of mysql_secure_installation
@@ -49,42 +47,41 @@
     - name: MySQL configuration file, my.cnf
       action: template src=templates/etc-mysql-my-cnf.j2 dest=/etc/mysql/my.cnf
       tags: common
-      notify: Restart MySQL
 
-    - name: Set the root password. Has to be done using shell otherwise will fail if run again.
-      action: shell echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$mysql_root_password');" | mysql
-      tags: common
-
-    - name: Delete anonymous MySQL server user for $server_hostname
-      action: mysql_user loginpass="$mysql_root_password" user="" host="$server_hostname" state="absent"
-      tags: common
-
-    - name: Delete anonymous MySQL server user for localhost
-      action: mysql_user loginpass="$mysql_root_password" user="" state="absent"
-      tags: common
-
-    - name: Secure the MySQL root user for IPV6 localhost (::1)
-      action: mysql_user loginpass="$mysql_root_password" user="root" passwd="$mysql_root_password" host="::1"
-      tags: common
-
-    - name: Secure the MySQL root user for IPV4 localhost (127.0.0.1)
-      action: mysql_user loginpass="$mysql_root_password" user="root" passwd="$mysql_root_password" host="127.0.0.1"
-      tags: common
-
-    - name: Secure the MySQL root user for localhost domain (localhost)
-      action: mysql_user loginpass="$mysql_root_password" user="root" passwd="$mysql_root_password" host="localhost"
-      tags: common
-
-    - name: Secure the MySQL root user for $server_hostname domain
-      action: mysql_user loginpass="$mysql_root_password" user="root" passwd="$mysql_root_password" host="$server_hostname"
-      tags: common
-
-    - name: Remove the MySQL test database
-      action: mysql_db loginpass="$mysql_root_password" db=test state=absent
+    - name: Set the root password.
+      action: mysql_user user=root password=$mysql_root_password host=localhost
       tags: common
 
     - name: MySQL config for easy access as root user
       action: template src=templates/root-my-cnf.j2 dest=/root/.my.cnf
+      tags: common
+
+    - name: Delete anonymous MySQL server user for $server_hostname
+      action: mysql_user user="" host="$server_hostname" state="absent"
+      tags: common
+
+    - name: Delete anonymous MySQL server user for localhost
+      action: mysql_user user="" state="absent"
+      tags: common
+
+    - name: Secure the MySQL root user for IPV6 localhost (::1)
+      action: mysql_user user="root" password="$mysql_root_password" host="::1"
+      tags: common
+
+    - name: Secure the MySQL root user for IPV4 localhost (127.0.0.1)
+      action: mysql_user user="root" password="$mysql_root_password" host="127.0.0.1"
+      tags: common
+
+    - name: Secure the MySQL root user for localhost domain (localhost)
+      action: mysql_user user="root" password="$mysql_root_password" host="localhost"
+      tags: common
+
+    - name: Secure the MySQL root user for $server_hostname domain
+      action: mysql_user user="root" password="$mysql_root_password" host="$server_hostname"
+      tags: common
+
+    - name: Remove the MySQL test database
+      action: mysql_db db=test state=absent
       tags: common
 
     ##
@@ -97,7 +94,6 @@
     - name: Apache configuration file for our site
       action: template src=templates/etc-apache2-sites-available-devserver.j2 dest=/etc/apache2/sites-available/devserver
       tags: common
-      notify: Restart Apache
 
     - name: Disable the default site
       action: command a2dissite default
@@ -117,7 +113,6 @@
     - name: FTP daemon setup
       action: template src=templates/etc-vsftpd-conf.j2 dest=/etc/vsftpd.conf
       tags: ftp
-      notify: Restart vsftpd
 
     ##
     # Drush install, a Drupal shell tool.
@@ -156,12 +151,17 @@
         - nodejs
         - npm
 
-  handlers:
+    ##
+    # Restart services
+    #
     - name: Restart Apache
       action: service name=apache2 state=restarted
+      tags: common
 
     - name: Restart MySQL
       action: service name=mysql state=restarted
+      tags: common
 
     - name: Restart vsftpd
       action: service name=vsftpd state=restarted
+      tags: ftp
