@@ -159,6 +159,29 @@
       tags: redis
 
     ##
+    # CSS compiling tools.
+    #
+    - name: Install rubygems package
+      action: apt pkg=rubygems state=installed
+      tags: css
+
+    - name: Install SASS
+      action: command gem install sass creates=/usr/local/bin/sass
+      tags: css
+
+    - name: Install Susy
+      action: command gem install susy --pre
+      tags: css
+
+    - name: Install Compass
+      action: command gem install compass creates=/usr/local/bin/compass
+      tags: css
+
+    - name: Install Respond-to
+      action: command gem install respond-to
+      tags: css
+
+    ##
     # Restart services
     #
     - name: Restart Apache
