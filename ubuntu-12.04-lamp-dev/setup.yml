@@ -182,6 +182,17 @@
       tags: css
 
     ##
+    # Dotcloud support
+    #
+    - name: Python pip for dotcloud
+      action: apt pkg=python-pip state=installed
+      tags: dotcloud
+
+    - name: Install dotcloud cli
+      action: command pip install dotcloud creates=/usr/local/bin/dotcloud
+      tags: dotcloud
+
+    ##
     # Restart services
     #
     - name: Restart Apache
