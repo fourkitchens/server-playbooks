@@ -31,6 +31,13 @@
         - python-mysqldb
 
     ##
+    # Message of the day explaining server purpose.
+    #
+    - name: Friendly message of the day
+      action: copy src=files/etc-update-motd-d-95-ansible dest=/etc/update-motd.d/95-ansible mode=755
+      tags: common
+
+    ##
     # PHP Setup.
     #
     - name: PHP configuration file, php.ini

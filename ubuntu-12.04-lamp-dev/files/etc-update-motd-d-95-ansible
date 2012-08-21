@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo
+echo " ******************************************************"
+echo " * This server is configured using Ansible."
+echo " * To change configuration, modify the playbooks in"
+echo " * /root/server-playbooks, and re-run them."
+echo " ******************************************************"
+echo
