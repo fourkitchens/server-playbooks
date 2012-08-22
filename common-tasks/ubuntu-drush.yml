@@ -4,23 +4,23 @@
 #
 # Ubuntu only due to using apt.
 #
-- name: PEAR for obtaining drush.
+- name: Drush | Install PHP PEAR
   action: apt pkg=php-pear state=installed
   tags: drush
 
-- name: Update PEAR.
+- name: Drush | Update PEAR
   action: command pear upgrade-all
   tags: drush
 
-- name: Setup PEAR channel for drush
+- name: Drush | Setup PEAR channel
   action: command pear channel-discover pear.drush.org creates=/usr/share/php/.channels/pear.drush.org.reg
   tags: drush
 
-- name: Install drush for Drupal
+- name: Drush | Install drush
   action: command pear install drush/drush creates=/usr/bin/drush
   tags: drush
   
-- name: Run drush once so it downloads it's dependencies.
+- name: Drush | Run drush once so it downloads it's dependencies
   action: command drush
   tags: drush
   

@@ -17,6 +17,9 @@ php_post_max_size: '32M'
 php_upload_max_filesize: '32M'
 php_date_timezone: 'US/Central'
 
+# eaccelerator.ini
+eaccel_shm_size: '32'
+
 # my.cnf
 mysql_max_allowed_packet: '128M'
 mysql_character_set_server: 'utf8'

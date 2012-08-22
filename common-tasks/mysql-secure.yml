@@ -4,38 +4,38 @@
 #
 # Distribution independent.
 #
-- name: Set the root password.
+- name: MySQL | Set the root password.
   action: mysql_user user=root password=$mysql_root_password host=localhost
   tags: common
 
-- name: MySQL config for easy access as root user
+- name: MySQL | Config for easy access as root user
   action: template src=templates/root-my-cnf.j2 dest=/root/.my.cnf
   tags: common
 
-- name: Delete anonymous MySQL server user for $server_hostname
+- name: MySQL | Delete anonymous MySQL server user for $server_hostname
   action: mysql_user user="" host="$server_hostname" state="absent"
   tags: common
 
-- name: Delete anonymous MySQL server user for localhost
+- name: MySQL | Delete anonymous MySQL server user for localhost
   action: mysql_user user="" state="absent"
   tags: common
 
-- name: Secure the MySQL root user for IPV6 localhost (::1)
+- name: MySQL | Secure the MySQL root user for IPV6 localhost (::1)
   action: mysql_user user="root" password="$mysql_root_password" host="::1"
   tags: common
 
-- name: Secure the MySQL root user for IPV4 localhost (127.0.0.1)
+- name: MySQL | Secure the MySQL root user for IPV4 localhost (127.0.0.1)
   action: mysql_user user="root" password="$mysql_root_password" host="127.0.0.1"
   tags: common
 
-- name: Secure the MySQL root user for localhost domain (localhost)
+- name: MySQL | Secure the MySQL root user for localhost domain (localhost)
   action: mysql_user user="root" password="$mysql_root_password" host="localhost"
   tags: common
 
-- name: Secure the MySQL root user for $server_hostname domain
+- name: MySQL | Secure the MySQL root user for $server_hostname domain
   action: mysql_user user="root" password="$mysql_root_password" host="$server_hostname"
   tags: common
 
-- name: Remove the MySQL test database
+- name: MySQL | Remove the MySQL test database
   action: mysql_db db=test state=absent
   tags: common

@@ -13,7 +13,7 @@
     ##
     # Apt package installation of required software.
     #
-    - name: Install required packages.
+    - name: General | Install required packages.
       action: apt pkg=$item state=installed
       tags: common
       with_items:
@@ -32,21 +32,21 @@
     ##
     # Message of the day explaining server is under Ansible control.
     #
-    - name: Message of the day explaining server is under Ansible control.
+    - name: General | Message of the day explaining server is under Ansible control.
       action: copy src=files/etc-update-motd-d-95-ansible dest=/etc/update-motd.d/95-ansible mode=755
       tags: common
 
     ##
     # PHP Setup.
     #
-    - name: PHP configuration file, php.ini
+    - name: PHP | Configuration file, php.ini
       action: template src=templates/etc-php5-apache2-php-ini.j2 dest=/etc/php5/apache2/php.ini
       tags: common
 
     ##
     # MySQL database setup.
     #
-    - name: MySQL configuration file, my.cnf
+    - name: MySQL | Configuration file, my.cnf
       action: template src=templates/etc-mysql-my-cnf.j2 dest=/etc/mysql/my.cnf
       tags: common
 
@@ -55,19 +55,19 @@
     ##
     # Apache2 setup.
     #
-    - name: Enable some required modules
+    - name: Apache | Enable some required modules
       action: command a2enmod rewrite vhost_alias
       tags: common
 
-    - name: Apache configuration file for our site
+    - name: Apache | Configuration file for our site
       action: template src=templates/etc-apache2-sites-available-devserver.j2 dest=/etc/apache2/sites-available/devserver
       tags: common
 
-    - name: Disable the default site
+    - name: Apache | Disable the default site
       action: command a2dissite default
       tags: common
 
-    - name: Enable our new site
+    - name: Apache | Enable our new site
       action: command a2ensite devserver
       tags: common
 
@@ -75,6 +75,11 @@
     # Drush install, a Drupal shell tool.
     #
     - include: ../common-tasks/ubuntu-drush.yml
+
+    ##
+    # eAccelerator opcode cache.
+    #
+    - include: ../common-tasks/ubuntu-eaccelerator.yml
 
     ##
     # Restart services
