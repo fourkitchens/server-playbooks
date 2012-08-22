@@ -82,42 +82,4 @@ Conventions used in playbooks
   __vars/settings-default.yml__ file will give you a complete overview of all the
   configuration that is modified from the server package default.
 
-Ubuntu 12.04 LAMP Dev Server
----------------------------
-
-Found in folder __/ubuntu-12.04-lamp-dev__
-
-Packages tagged 'common': Apache, MySQL, APC cache, PHP.
-
-Other optional tags:
-
-    +--------------------------------------------------------------+
-    | drush      | Drupal shell.                                   |
-    +--------------------------------------------------------------+
-    | ftp        | VSFtp daemon                                    |
-    +--------------------------------------------------------------+
-    | nodejs     | node.js and npm (latest from ppa)               |
-    +--------------------------------------------------------------+
-    | redis      | redis server                                    |
-    +--------------------------------------------------------------+
-    | css        | SASS, Susy, Compass, Respond-to                 |
-    +--------------------------------------------------------------+
-    | dotcloud   | The CLI for interacting with dotcloud hosting   |
-    +--------------------------------------------------------------+
-
-This server is configured for multiple developers who need to work on many
-projects simultaneously. The most notable piece of configuration is the way
-Apache is setup, it has a variable document root. This allows a developer to
-organise their home folder in the following way:
-
-    /home/username/www/project1
-    /home/username/www/project2
-    /home/username/www/project3
-
-And access each of the sites by going to URLs formatted as follows:
-
-    http://username.project1.example.com/
-    http://username.project2.example.com/
-    http://username.project3.example.com/
-
 [1]: http://ansible.github.com/ "Ansible"
