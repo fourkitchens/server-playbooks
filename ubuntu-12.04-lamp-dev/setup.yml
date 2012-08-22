@@ -31,9 +31,9 @@
         - python-mysqldb
 
     ##
-    # Message of the day explaining server purpose.
+    # Message of the day explaining server is under control of Ansible.
     #
-    - name: Friendly message of the day
+    - name: Message of the day explaining server is under Ansible control.
       action: copy src=files/etc-update-motd-d-95-ansible dest=/etc/update-motd.d/95-ansible mode=755
       tags: common
 
@@ -49,47 +49,13 @@
       tags: common
 
     ##
-    # MySQL database setup, this does the equivalent of mysql_secure_installation
+    # MySQL database setup.
     #
     - name: MySQL configuration file, my.cnf
       action: template src=templates/etc-mysql-my-cnf.j2 dest=/etc/mysql/my.cnf
       tags: common
 
-    - name: Set the root password.
-      action: mysql_user user=root password=$mysql_root_password host=localhost
-      tags: common
-
-    - name: MySQL config for easy access as root user
-      action: template src=templates/root-my-cnf.j2 dest=/root/.my.cnf
-      tags: common
-
-    - name: Delete anonymous MySQL server user for $server_hostname
-      action: mysql_user user="" host="$server_hostname" state="absent"
-      tags: common
-
-    - name: Delete anonymous MySQL server user for localhost
-      action: mysql_user user="" state="absent"
-      tags: common
-
-    - name: Secure the MySQL root user for IPV6 localhost (::1)
-      action: mysql_user user="root" password="$mysql_root_password" host="::1"
-      tags: common
-
-    - name: Secure the MySQL root user for IPV4 localhost (127.0.0.1)
-      action: mysql_user user="root" password="$mysql_root_password" host="127.0.0.1"
-      tags: common
-
-    - name: Secure the MySQL root user for localhost domain (localhost)
-      action: mysql_user user="root" password="$mysql_root_password" host="localhost"
-      tags: common
-
-    - name: Secure the MySQL root user for $server_hostname domain
-      action: mysql_user user="root" password="$mysql_root_password" host="$server_hostname"
-      tags: common
-
-    - name: Remove the MySQL test database
-      action: mysql_db db=test state=absent
-      tags: common
+    - include: ../common-tasks/mysql-secure.yml
 
     ##
     # Apache2 setup.
