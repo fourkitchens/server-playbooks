@@ -46,7 +46,7 @@
   tags: eaccel
 
 - name: eAccelerator | Configure the kernel max shm size to support large memory allocation.
-  action: file src=files/etc-sysctl-d-65-shm-size-conf dest=/etc/sysctl.d/65-shm-size.conf
+  action: copy src=files/etc-sysctl-d-65-shm-size-conf dest=/etc/sysctl.d/65-shm-size.conf
   tags: eaccel
 
 - name: eAccelerator | Configure the kernel max shm size to support large memory allocation.
