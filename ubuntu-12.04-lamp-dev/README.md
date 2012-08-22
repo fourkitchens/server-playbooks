@@ -21,7 +21,7 @@ And access each of the sites by going to URLs formatted as follows:
     http://username.project2.example.com/
     http://username.project3.example.com/
 
-Packages tagged 'common': Apache, MySQL, APC cache, PHP.
+Packages tagged `common`: Apache, MySQL, APC cache, PHP.
 
 Other optional tags:
 

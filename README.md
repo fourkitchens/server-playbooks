@@ -26,7 +26,7 @@ steps for setting it up on Ubuntu and immediately configuring it to use
 localhost as the target server, the simplest configuration option:
 
     sudo aptitude -y install git python-jinja2 python-yaml python-paramiko python-software-properties
-    add-apt-repository -y ppa:rquillo/ansible/ubuntu
+    add-apt-repository ppa:rquillo/ansible/ubuntu
     aptitude update
     aptitude install ansible
     echo "localhost" > /etc/ansible/hosts
@@ -37,8 +37,9 @@ You can now test by typing:
 
 You should see:
 
-    127.0.0.1 | success >> {
-      "ping": "pong"
+    localhost | success >> {
+      "module": "ping",
+      "ping": "pong
     }
 
 ### Run the play

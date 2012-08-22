@@ -1,0 +1,52 @@
+##
+# Ansible playbook for setting up a LAMP development server on Ubuntu 10.04.
+#
+
+---
+- hosts: all
+  user: root
+
+  vars_files:
+    - settings.yml
+
+  tasks:
+    ##
+    # Apt package installation of required software.
+    #
+    - name: Install required packages.
+      action: apt pkg=$item state=installed
+      tags: common
+      with_items:
+        - php5
+        - apache2
+        - mysql-server
+        - mysql-client
+        - php5-mysql
+        - php5-xmlrpc
+        - php-soap
+        - php5-gd
+        - sendmail
+        - unzip
+        - python-mysqldb
+
+    ##
+    # Message of the day explaining server is under Ansible control.
+    #
+    - name: Message of the day explaining server is under Ansible control.
+      action: copy src=files/etc-update-motd-d-95-ansible dest=/etc/update-motd.d/95-ansible mode=755
+      tags: common
+
+    ##
+    # Restart services
+    #
+    - name: Restart Apache
+      action: service name=apache2 state=restarted
+      tags: common
+
+    - name: Restart MySQL
+      action: service name=mysql state=restarted
+      tags: common
+
+    - name: Restart vsftpd
+      action: service name=vsftpd state=restarted
+      tags: ftp

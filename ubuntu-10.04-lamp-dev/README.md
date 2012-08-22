@@ -9,7 +9,7 @@ need using:
 
     ansible-playbook -c local --tags="common,..." ./setup.yml
 
-Packages tagged 'common': Apache, MySQL, PHP.
+Packages tagged `common`: Apache, MySQL, PHP.
 
 Other optional tags:
 
