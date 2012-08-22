@@ -22,16 +22,14 @@ clusters of machines, you should setup Ansible on a separate controller machine
 or your personal machine.
 
 You may refer to the setup guide on the Ansible homepage, however here are the
-steps for setting it up on Ubuntu 12.04 and immediately configuring it to use
+steps for setting it up on Ubuntu and immediately configuring it to use
 localhost as the target server, the simplest configuration option:
 
-    sudo aptitude -y install git python-jinja2 python-yaml python-paramiko
-    git clone git://github.com/ansible/ansible.git
-    cd ./ansible
-    git checkout devel
-    source ./hacking/env-setup
-    sudo mkdir /etc/ansible
-    sudo echo "127.0.0.1" > /etc/ansible/hosts
+    sudo aptitude -y install git python-jinja2 python-yaml python-paramiko python-software-properties
+    add-apt-repository -y ppa:rquillo/ansible/ubuntu
+    aptitude update
+    aptitude install ansible
+    echo "localhost" > /etc/ansible/hosts
 
 You can now test by typing:
 
@@ -89,7 +87,23 @@ Ubuntu 12.04 LAMP Dev Server
 
 Found in folder __/ubuntu-12.04-lamp-dev__
 
-Packages: Apache, MySQL, APC cache, PHP, Drush, FTP server, node.js.
+Packages tagged 'common': Apache, MySQL, APC cache, PHP.
+
+Other optional tags:
+
+    +--------------------------------------------------------------+
+    | drush      | Drupal shell.                                   |
+    +--------------------------------------------------------------+
+    | ftp        | VSFtp daemon                                    |
+    +--------------------------------------------------------------+
+    | nodejs     | node.js and npm (latest from ppa)               |
+    +--------------------------------------------------------------+
+    | redis      | redis server                                    |
+    +--------------------------------------------------------------+
+    | css        | SASS, Susy, Compass, Respond-to                 |
+    +--------------------------------------------------------------+
+    | dotcloud   | The CLI for interacting with dotcloud hosting   |
+    +--------------------------------------------------------------+
 
 This server is configured for multiple developers who need to work on many
 projects simultaneously. The most notable piece of configuration is the way
