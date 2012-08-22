@@ -41,6 +41,14 @@
   action: file path=/var/cache/eaccelerator state=directory owner=www-data mode=700
   tags: eaccel
 
-- name: eAccelerator | And a log file
+- name: eAccelerator | Make a log file
   action: file path=/var/log/eaccelerator.log state=file owner=www-data mode=666
+  tags: eaccel
+
+- name: eAccelerator | Configure the kernel max shm size to support large memory allocation.
+  action: file src=files/etc-sysctl-d-65-shm-size-conf dest=/etc/sysctl.d/65-shm-size.conf
+  tags: eaccel
+
+- name: eAccelerator | Configure the kernel max shm size to support large memory allocation.
+  action: shell echo "260000000" > /proc/sys/kernel/shmmax
   tags: eaccel
