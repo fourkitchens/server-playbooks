@@ -6,8 +6,9 @@
 #
 - name: Memcached | Install packages
   action: apt pkg=$item state=installed
-  with_items: 
+  with_items:
     # This is 3.0.4 in Ubuntu, which is listed as 'beta' on the PECL page.
+    # Right now in our testing, we want to use 2.x.
     #- php5-memcache
     - memcached
   tags: memcached

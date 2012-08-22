@@ -53,7 +53,8 @@
     - include: ../common-tasks/mysql-secure.yml
 
     ##
-    # Apache2 setup.
+    # Apache2 setup. Webroot is at /var/dev, rather than /var/www because
+    # strictly speaking /var/www is owned by an apt package.
     #
     - name: Apache | Enable some required modules
       action: command a2enmod rewrite vhost_alias

@@ -19,8 +19,7 @@
 - name: Drush | Install drush
   action: command pear install drush/drush creates=/usr/bin/drush
   tags: drush
-  
+
 - name: Drush | Run drush once so it downloads it's dependencies
   action: command drush
   tags: drush
-  

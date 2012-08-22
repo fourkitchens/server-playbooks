@@ -5,14 +5,14 @@
 <VirtualHost *:80>
 	ServerAdmin {{ apache_server_admin }}
 
-	DocumentRoot /var/www
+	DocumentRoot /var/dev
 
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
 
-	<Directory /var/www/>
+	<Directory /var/dev/>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride All
 		Order allow,deny
