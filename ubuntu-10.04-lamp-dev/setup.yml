@@ -53,6 +53,25 @@
     - include: ../common-tasks/mysql-secure.yml
 
     ##
+    # Apache2 setup.
+    #
+    - name: Enable some required modules
+      action: command a2enmod rewrite vhost_alias
+      tags: common
+
+    - name: Apache configuration file for our site
+      action: template src=templates/etc-apache2-sites-available-devserver.j2 dest=/etc/apache2/sites-available/devserver
+      tags: common
+
+    - name: Disable the default site
+      action: command a2dissite default
+      tags: common
+
+    - name: Enable our new site
+      action: command a2ensite devserver
+      tags: common
+
+    ##
     # Restart services
     #
     - name: Restart Apache

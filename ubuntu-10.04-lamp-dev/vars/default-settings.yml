@@ -28,4 +28,3 @@ mysql_root_password: 'password'
 
 # apache
 apache_server_admin: 'webmaster@example.com'
-apache_server_alias: '*.*.example.com'
