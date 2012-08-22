@@ -1,0 +1,25 @@
+---
+##
+# Memcached daemon and PECL extension.
+#
+# Ubuntu only due to using apt.
+#
+- name: Memcached | Install packages
+  action: apt pkg=$item state=installed
+  with_items: 
+    # This is 3.0.4 in Ubuntu, which is listed as 'beta' on the PECL page.
+    #- php5-memcache
+    - memcached
+  tags: memcached
+
+- name: Memcached | Config file
+  action: template src=templates/etc-memcached-conf.j2 dest=/etc/memcached.conf
+  tags: memcached
+
+- name: Memcached | PECL Library install
+  action: shell printf "yes\n" | pecl install memcache creates=/usr/lib/php5/20090626/memcache.so
+  tags: memcached
+
+- name: Memcached | Config file for the PHP memcache extension
+  action: template src=templates/etc-php5-conf-d-memcache-ini.j2 dest=/etc/php5/conf.d/memcache.ini
+  tags: memcached

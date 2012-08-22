@@ -82,6 +82,10 @@
     - include: ../common-tasks/ubuntu-eaccelerator.yml
 
     ##
+    # Memcached daemon.
+    - include: ../common-tasks/ubuntu-memcached.yml
+
+    ##
     # Restart services
     #
     - name: Restart Apache
@@ -91,3 +95,7 @@
     - name: Restart MySQL
       action: service name=mysql state=restarted
       tags: common
+
+    - name: Restart Memcached
+      action: service name=memcached state=restarted
+      tags: memcached

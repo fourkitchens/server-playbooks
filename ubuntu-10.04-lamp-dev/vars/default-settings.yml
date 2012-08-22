@@ -18,7 +18,13 @@ php_upload_max_filesize: '32M'
 php_date_timezone: 'US/Central'
 
 # eaccelerator.ini
-eaccel_shm_size: '32'
+eaccel_shm_size: '256'
+
+# memcached.conf
+memcached_memory: '128'
+
+# memcache.ini
+memcache_hash_strategy: 'consistent'
 
 # my.cnf
 mysql_max_allowed_packet: '128M'
