@@ -37,6 +37,22 @@
       tags: common
 
     ##
+    # PHP Setup.
+    #
+    - name: PHP configuration file, php.ini
+      action: template src=templates/etc-php5-apache2-php-ini.j2 dest=/etc/php5/apache2/php.ini
+      tags: common
+
+    ##
+    # MySQL database setup.
+    #
+    - name: MySQL configuration file, my.cnf
+      action: template src=templates/etc-mysql-my-cnf.j2 dest=/etc/mysql/my.cnf
+      tags: common
+
+    - include: ../common-tasks/mysql-secure.yml
+
+    ##
     # Restart services
     #
     - name: Restart Apache

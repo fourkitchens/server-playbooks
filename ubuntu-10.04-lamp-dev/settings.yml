@@ -6,7 +6,7 @@
 # Hostname is important as we need to delete an anonymous MySQL
 # user that is created with this name, make sure you match this
 # up with the output of the command 'hostname' on the server.
-server_hostname: 'example'
+server_hostname: 'ada'
 
 # php.ini
 php_max_execution_time: '90'
