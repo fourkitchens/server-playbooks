@@ -2,6 +2,8 @@
 ##
 # MySQL database setup, this does the equivalent of mysql_secure_installation.
 #
+# Distribution independent.
+#
 - name: Set the root password.
   action: mysql_user user=root password=$mysql_root_password host=localhost
   tags: common

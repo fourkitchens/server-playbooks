@@ -90,17 +90,7 @@
     ##
     # Drush install, a Drupal shell tool.
     #
-    - name: PEAR for obtaining drush.
-      action: apt pkg=php-pear state=installed
-      tags: drush
-
-    - name: Setup PEAR channel for drush
-      action: command pear channel-discover pear.drush.org creates=/usr/share/php/.channels/pear.drush.org.reg
-      tags: drush
-
-    - name: Install drush for Drupal
-      action: command pear install drush/drush creates=/usr/bin/drush
-      tags: drush
+    - include: ../common-tasks/ubuntu-drush.yml
 
     ##
     # node.js installation (latest stable instead of Ubuntu's out-of-date one)

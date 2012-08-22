@@ -72,6 +72,11 @@
       tags: common
 
     ##
+    # Drush install, a Drupal shell tool.
+    #
+    - include: ../common-tasks/ubuntu-drush.yml
+
+    ##
     # Restart services
     #
     - name: Restart Apache
@@ -81,7 +86,3 @@
     - name: Restart MySQL
       action: service name=mysql state=restarted
       tags: common
-
-    - name: Restart vsftpd
-      action: service name=vsftpd state=restarted
-      tags: ftp
