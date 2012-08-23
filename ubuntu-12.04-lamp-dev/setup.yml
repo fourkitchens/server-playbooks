@@ -13,7 +13,7 @@
     ##
     # Apt package installation of required software.
     #
-    - name: Install required packages.
+    - name: General | Install required packages.
       action: apt pkg=$item state=installed
       tags: common
       with_items:
@@ -33,25 +33,25 @@
     ##
     # Message of the day explaining server is under control of Ansible.
     #
-    - name: Message of the day explaining server is under Ansible control.
+    - name: General | Message of the day explaining server is under Ansible control.
       action: copy src=files/etc-update-motd-d-95-ansible dest=/etc/update-motd.d/95-ansible mode=755
       tags: common
 
     ##
     # PHP Setup.
     #
-    - name: PHP configuration file, php.ini
+    - name: PHP | Configuration file, php.ini
       action: template src=templates/etc-php5-apache2-php-ini.j2 dest=/etc/php5/apache2/php.ini
       tags: common
 
-    - name: APC cache configuration file, apc.ini
+    - name: APC | Cache configuration file, apc.ini
       action: template src=templates/etc-php5-conf-d-apc-ini.j2 dest=/etc/php5/conf.d/apc.ini
       tags: common
 
     ##
     # MySQL database setup.
     #
-    - name: MySQL configuration file, my.cnf
+    - name: MySQL | Configuration file, my.cnf
       action: template src=templates/etc-mysql-my-cnf.j2 dest=/etc/mysql/my.cnf
       tags: common
 
@@ -60,30 +60,30 @@
     ##
     # Apache2 setup.
     #
-    - name: Enable some required modules
+    - name: Apache | Enable some required modules
       action: command a2enmod rewrite vhost_alias
       tags: common
 
-    - name: Apache configuration file for our site
+    - name: Apache | Configuration file for our site
       action: template src=templates/etc-apache2-sites-available-devserver.j2 dest=/etc/apache2/sites-available/devserver
       tags: common
 
-    - name: Disable the default site
+    - name: Apache | Disable the default site
       action: command a2dissite default
       tags: common
 
-    - name: Enable our new site
+    - name: Apache | Enable our new site
       action: command a2ensite devserver
       tags: common
 
     ##
     # FTP server setup.
     #
-    - name: PEAR for obtaining drush.
+    - name: FTP | vsftpd daemon package
       action: apt pkg=vsftpd state=installed
       tags: ftp
 
-    - name: FTP daemon setup
+    - name: FTP | Configuration setup
       action: template src=templates/etc-vsftpd-conf.j2 dest=/etc/vsftpd.conf
       tags: ftp
 
@@ -95,19 +95,19 @@
     ##
     # node.js installation (latest stable instead of Ubuntu's out-of-date one)
     #
-    - name: Package prerequisites for node.js
+    - name: Node.js | Package prerequisites for node.js
       action: apt pkg=python-software-properties state=installed
       tags: nodejs
 
-    - name: Add the node.js PPA
+    - name: Node.js | Add the node.js PPA
       action: command add-apt-repository -y ppa:chris-lea/node.js creates=/etc/apt/sources.list.d/chris-lea-node_js-precise.list
       tags: nodejs
 
-    - name: Update the apt cache for the new repository
+    - name: Node.js | Update the apt cache for the new repository
       action: apt update-cache=yes
       tags: nodejs
 
-    - name: Install nodejs and npm
+    - name: Node.js | Install nodejs and npm
       action: apt pkg=$item state=installed
       tags: nodejs
       with_items:
@@ -117,41 +117,41 @@
     ##
     # Redis server.
     #
-    - name: Install redis
+    - name: Redis | Install redis
       action: apt pkg=redis-server state=installed
       tags: redis
 
     ##
     # CSS compiling tools.
     #
-    - name: Install rubygems package
+    - name: CSS | Install rubygems package
       action: apt pkg=rubygems state=installed
       tags: css
 
-    - name: Install SASS
+    - name: CSS | Install SASS
       action: command gem install sass creates=/usr/local/bin/sass
       tags: css
 
-    - name: Install Susy
+    - name: CSS | Install Susy
       action: command gem install susy --pre
       tags: css
 
-    - name: Install Compass
+    - name: CSS | Install Compass
       action: command gem install compass creates=/usr/local/bin/compass
       tags: css
 
-    - name: Install Respond-to
+    - name: CSS | Install Respond-to
       action: command gem install respond-to
       tags: css
 
     ##
     # Dotcloud support
     #
-    - name: Python pip for dotcloud
+    - name: Dotcloud | Python pip for dotcloud
       action: apt pkg=python-pip state=installed
       tags: dotcloud
 
-    - name: Install dotcloud cli
+    - name: Dotcloud | Install dotcloud cli
       action: command pip install dotcloud creates=/usr/local/bin/dotcloud
       tags: dotcloud
 
