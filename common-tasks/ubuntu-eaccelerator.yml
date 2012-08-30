@@ -42,6 +42,10 @@
   tags: eaccel
 
 - name: eAccelerator | Make a log file
+  action: command touch /var/log/eaccelerator.log creates=/var/log/eaccelerator.log
+  tags: eaccel
+
+- name: eAccelerator | Set the log file to the correct owner
   action: file path=/var/log/eaccelerator.log state=file owner=www-data mode=666
   tags: eaccel
 
