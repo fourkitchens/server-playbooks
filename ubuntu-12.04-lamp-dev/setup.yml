@@ -132,8 +132,8 @@
       action: command gem install sass creates=/usr/local/bin/sass
       tags: css
 
-    - name: CSS | Install Susy
-      action: command gem install susy --pre
+    - name: CSS | Install Susy (no more --pre required as it's 1.0 now)
+      action: command gem install susy
       tags: css
 
     - name: CSS | Install Compass
