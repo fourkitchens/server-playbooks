@@ -23,6 +23,7 @@
         - mysql-client
         - php5-mysql
         - php5-xmlrpc
+        - php5-curl
         - php-soap
         - php5-gd
         - sendmail
