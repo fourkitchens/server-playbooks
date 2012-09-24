@@ -24,6 +24,7 @@
         - php5-mysql
         - php5-xmlrpc
         - php5-curl
+        - php-apc
         - php-soap
         - php5-gd
         - sendmail
@@ -42,6 +43,10 @@
     #
     - name: PHP | Configuration file, php.ini
       action: template src=templates/etc-php5-apache2-php-ini.j2 dest=/etc/php5/apache2/php.ini
+      tags: common
+
+    - name: APC | Cache configuration file, apc.ini
+      action: template src=templates/etc-php5-conf-d-apc-ini.j2 dest=/etc/php5/conf.d/apc.ini
       tags: common
 
     ##
@@ -77,11 +82,6 @@
     # Drush install, a Drupal shell tool.
     #
     - include: ../common-tasks/ubuntu-drush.yml
-
-    ##
-    # eAccelerator opcode cache.
-    #
-    - include: ../common-tasks/ubuntu-eaccelerator.yml
 
     ##
     # Memcached daemon.
