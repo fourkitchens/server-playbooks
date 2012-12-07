@@ -132,7 +132,7 @@
       action: command gem install sass creates=/usr/local/bin/sass
       tags: css
 
-    - name: CSS | Install Susy (no more --pre required as it's 1.0 now)
+    - name: CSS | Install Susy (no more --pre required as it is 1.0 now)
       action: command gem install susy
       tags: css
 
@@ -140,8 +140,8 @@
       action: command gem install compass creates=/usr/local/bin/compass
       tags: css
 
-    - name: CSS | Install Respond-to
-      action: command gem install respond-to
+    - name: CSS | Install Aurora (which will install breakpoint, sass-buttons, respond-to)
+      action: command gem install compass-aurora
       tags: css
 
     ##
