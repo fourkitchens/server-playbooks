@@ -26,7 +26,7 @@ steps for setting it up on Ubuntu and immediately configuring it to use
 localhost as the target server, the simplest configuration option:
 
     sudo aptitude -y install git python-jinja2 python-yaml python-paramiko python-software-properties
-    add-apt-repository ppa:rquillo/ansible/ubuntu
+    add-apt-repository ppa:rquillo/ansible
     aptitude update
     aptitude install ansible
     echo "localhost" > /etc/ansible/hosts
