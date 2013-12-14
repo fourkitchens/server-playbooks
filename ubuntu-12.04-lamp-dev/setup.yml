@@ -14,7 +14,7 @@
     # Apt package installation of required software.
     #
     - name: General | Install required packages.
-      action: apt pkg=$item state=installed
+      action: apt pkg={{ item }} state=installed
       tags: common
       with_items:
         - php5
@@ -108,7 +108,7 @@
       tags: nodejs
 
     - name: Node.js | Install nodejs and npm
-      action: apt pkg=$item state=installed
+      action: apt pkg={{ item }} state=installed
       tags: nodejs
       with_items:
         - nodejs
