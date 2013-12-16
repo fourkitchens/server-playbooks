@@ -14,7 +14,7 @@
     # Apt package installation of required software.
     #
     - name: General | Install required packages.
-      action: apt pkg=$item state=installed
+      action: apt pkg={{ item }} state=installed
       tags: common
       with_items:
         - php5
