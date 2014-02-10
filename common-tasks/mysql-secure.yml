@@ -13,7 +13,7 @@
   tags: common
 
 - name: MySQL | Delete anonymous MySQL server user for {{ server_hostname }}
-  action: mysql_user user="" host="{{ server_hostname }} state="absent"
+  action: mysql_user user="" host="{{ server_hostname }}" state="absent"
   tags: common
 
 - name: MySQL | Delete anonymous MySQL server user for localhost
